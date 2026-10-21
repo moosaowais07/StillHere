@@ -853,7 +853,7 @@ MonoBehaviour:
   startPoint: {fileID: 518885820}
   ayeshaSpot: {fileID: 537563980}
   ayeshaVisibleTime: 3
-  ayeshaHiddenTime: 3
+  ayeshaHiddenTime: 0
 --- !u!1 &440222601
 GameObject:
   m_ObjectHideFlags: 0
@@ -4148,8 +4148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MazeRoom
   startPoint: {fileID: 98674860}
   ayeshaSpot: {fileID: 836477009}
-  ayeshaVisibleTime: 3
-  ayeshaHiddenTime: 3
+  ayeshaVisibleTime: 2
+  ayeshaHiddenTime: 4
 --- !u!4 &1726116762
 Transform:
   m_ObjectHideFlags: 0
