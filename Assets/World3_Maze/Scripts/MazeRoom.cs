@@ -10,6 +10,12 @@ public class MazeRoom : MonoBehaviour
     [Tooltip("Where Ayesha stands in this room: next to the right door.")]
     public Transform ayeshaSpot;
 
+    [Header("How long Ayesha's light shows the way in this room")]
+    [Tooltip("Seconds her light stays on each time she appears.")]
+    public float ayeshaVisibleTime = 3f;
+    [Tooltip("Seconds she stays faded before glowing again. Set to 0 to keep her lit the whole time (good for Room 1).")]
+    public float ayeshaHiddenTime = 3f;
+
     // Draws helper shapes in the Scene view so you can see the room's points.
     void OnDrawGizmos()
     {

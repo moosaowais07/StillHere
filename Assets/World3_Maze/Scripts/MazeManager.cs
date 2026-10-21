@@ -81,7 +81,8 @@ public class MazeManager : MonoBehaviour
         MazeRoom room = rooms[index];
 
         MovePlayer(room.startPoint.position);
-        if (ayesha != null && room.ayeshaSpot != null) ayesha.MoveTo(room.ayeshaSpot.position);
+        if (ayesha != null && room.ayeshaSpot != null)
+            ayesha.MoveTo(room.ayeshaSpot.position, room.ayeshaVisibleTime, room.ayeshaHiddenTime);
 
         cameraTarget = new Vector3(room.transform.position.x, room.transform.position.y, cam.transform.position.z);
         if (instant) cam.transform.position = cameraTarget;
