@@ -2,12 +2,13 @@ using UnityEngine;
 
 // Runs World 3. Put ONE of these in the scene, on an empty object called "MazeManager".
 // It keeps track of which room Saad is in, moves the camera, tells Ayesha where to
-// stand, and decides what happens when Saad uses a door.
+// appear, and decides what happens when Saad uses a door.
 public class MazeManager : MonoBehaviour
 {
     public static MazeManager Instance { get; private set; }
 
-    [Tooltip("All the rooms, in the order Saad goes through them.")]
+    [Tooltip("The rooms on the RIGHT path, in order. The first one is where Saad starts. " +
+             "Lost rooms (dead ends) don't need to be in this list.")]
     public MazeRoom[] rooms;
 
     public AyeshaGuide ayesha;
@@ -18,7 +19,7 @@ public class MazeManager : MonoBehaviour
     [Tooltip("How quickly the camera slides to the next room.")]
     public float cameraSpeed = 8f;
 
-    public int CurrentRoomIndex { get; private set; }
+    public MazeRoom CurrentRoom { get; private set; }
 
     Transform player;
     Rigidbody2D playerBody;
@@ -44,45 +45,64 @@ public class MazeManager : MonoBehaviour
         player = p.transform;
         playerBody = p.GetComponent<Rigidbody2D>();
 
-        if (rooms == null || rooms.Length == 0)
+        if (rooms == null || rooms.Length == 0 || rooms[0] == null)
         {
             Debug.LogError("MazeManager: drag your rooms into the Rooms list.");
             return;
         }
-        EnterRoom(0, true);
+        EnterRoom(rooms[0], true);
     }
 
     public void UseDoor(MazeDoor door)
     {
         if (worldComplete) return;
 
-        switch (door.doorType)
+        if (door.doorType == MazeDoor.DoorType.Exit)
         {
-            case MazeDoor.DoorType.Right:
-                if (CurrentRoomIndex + 1 < rooms.Length) EnterRoom(CurrentRoomIndex + 1, false);
-                break;
+            worldComplete = true;
+            ShowMessage("World 3 complete", 9999f);
+            return;
+        }
 
-            case MazeDoor.DoorType.Wrong:
-                MovePlayer(rooms[CurrentRoomIndex].startPoint.position);
-                ShowMessage("...this isn't the way.");
-                break;
+        // A door that has a room dragged into "Leads To" always goes there.
+        if (door.leadsTo != null)
+        {
+            EnterRoom(door.leadsTo, false);
+            return;
+        }
 
-            case MazeDoor.DoorType.Exit:
-                worldComplete = true;
-                ShowMessage("World 3 complete");
-                messageTimer = 9999f;
-                break;
+        if (door.doorType == MazeDoor.DoorType.Right)
+        {
+            int index = System.Array.IndexOf(rooms, CurrentRoom);
+            if (index >= 0 && index + 1 < rooms.Length) EnterRoom(rooms[index + 1], false);
+            else Debug.LogWarning("MazeManager: this Right door has nowhere to go. Fill in its Leads To.");
+        }
+        else
+        {
+            SendBackToRoomStart("...this isn't the way.");
         }
     }
 
-    void EnterRoom(int index, bool instant)
+    // Used by wrong doors with no Leads To, and by pits and spikes.
+    public void SendBackToRoomStart(string text)
     {
-        CurrentRoomIndex = index;
-        MazeRoom room = rooms[index];
+        if (CurrentRoom == null) return;
+        MovePlayer(CurrentRoom.startPoint.position);
+        if (!string.IsNullOrEmpty(text)) ShowMessage(text, 2f);
+    }
 
+    void EnterRoom(MazeRoom room, bool instant)
+    {
+        CurrentRoom = room;
         MovePlayer(room.startPoint.position);
-        if (ayesha != null && room.ayeshaSpot != null)
-            ayesha.MoveTo(room.ayeshaSpot.position, room.ayeshaVisibleTime, room.ayeshaHiddenTime);
+
+        if (ayesha != null)
+        {
+            if (room.ayeshaSpot != null)
+                ayesha.AppearAt(room.ayeshaSpot.position, room.firstGlowTime, room.blinkTime, room.darkTime);
+            else
+                ayesha.Disappear(); // a lost room: she isn't here
+        }
 
         cameraTarget = new Vector3(room.transform.position.x, room.transform.position.y, cam.transform.position.z);
         if (instant) cam.transform.position = cameraTarget;
@@ -109,10 +129,10 @@ public class MazeManager : MonoBehaviour
         if (messageTimer > 0f) messageTimer -= Time.deltaTime;
     }
 
-    void ShowMessage(string text)
+    void ShowMessage(string text, float seconds)
     {
         message = text;
-        messageTimer = 2f;
+        messageTimer = seconds;
     }
 
     // Simple on screen text for the prototype (no UI setup needed).

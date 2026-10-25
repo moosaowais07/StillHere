@@ -39,13 +39,21 @@ public class DarkHand : MonoBehaviour, IHittable
     void Update()
     {
         if (ayesha == null) return;
+
+        // Ayesha isn't in this part of the house (Saad is in a lost room): pull back and wait.
+        if (!ayesha.IsPresent && state != State.PullingBack && state != State.Waiting)
+        {
+            if (state == State.Holding) ayesha.Release();
+            state = State.PullingBack;
+        }
+
         Vector3 target = ayesha.transform.position;
         float distanceFromHome = Vector3.Distance(home, target);
 
         switch (state)
         {
             case State.Waiting:
-                if (distanceFromHome > reachRange) { timer = 0f; break; }
+                if (distanceFromHome > reachRange || !ayesha.IsPresent) { timer = 0f; break; }
                 timer += Time.deltaTime;
                 if (timer >= waitBeforeReaching) state = State.Reaching;
                 break;

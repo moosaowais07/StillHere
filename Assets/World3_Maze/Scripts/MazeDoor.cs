@@ -2,17 +2,24 @@ using UnityEngine;
 
 // Put this on every door. The door needs a BoxCollider2D with "Is Trigger" ticked.
 // Saad stands in front of the door and presses W (or Up arrow) to go through.
+//
+// The easiest way to use it: drag the room this door goes to into "Leads To".
+// That way you can build a real maze where wrong doors take you to other rooms,
+// dead ends and loops, instead of just sending you back.
 [RequireComponent(typeof(Collider2D))]
 public class MazeDoor : MonoBehaviour
 {
     public enum DoorType
     {
-        Wrong,  // sends Saad back to the start of the same room
-        Right,  // takes Saad to the next room (Ayesha stands next to this one)
+        Wrong,  // if Leads To is empty: sends Saad back to the start of the same room
+        Right,  // if Leads To is empty: goes to the next room in the MazeManager list
         Exit    // the Locked Door at the end: finishes World 3
     }
 
     public DoorType doorType = DoorType.Wrong;
+
+    [Tooltip("The room this door takes Saad to. If you fill this in, it is used instead of the Door Type.")]
+    public MazeRoom leadsTo;
 
     bool playerInside;
 
@@ -57,5 +64,13 @@ public class MazeDoor : MonoBehaviour
         style.alignment = TextAnchor.MiddleCenter;
         style.normal.textColor = Color.white;
         GUI.Label(new Rect(0, Screen.height - 70, Screen.width, 40), "Press W to go through the door", style);
+    }
+
+    // In the Scene view, draws a line from this door to the room it leads to.
+    void OnDrawGizmos()
+    {
+        if (leadsTo == null) return;
+        Gizmos.color = doorType == DoorType.Right ? Color.yellow : Color.red;
+        Gizmos.DrawLine(transform.position, leadsTo.transform.position);
     }
 }

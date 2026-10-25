@@ -4,22 +4,25 @@ using UnityEngine;
 // The camera moves to this object's position when Saad enters the room.
 public class MazeRoom : MonoBehaviour
 {
-    [Tooltip("Where Saad appears when he enters this room (or goes through a wrong door).")]
+    [Tooltip("Where Saad appears when he enters this room (and where he goes back to after a pit or spikes).")]
     public Transform startPoint;
 
-    [Tooltip("Where Ayesha stands in this room: next to the right door.")]
+    [Tooltip("Where Ayesha appears in this room: next to the door that leads the right way. " +
+             "Leave EMPTY for a 'lost' room where Ayesha never appears.")]
     public Transform ayeshaSpot;
 
-    [Header("How long Ayesha's light shows the way in this room")]
-    [Tooltip("Seconds her light stays on each time she appears.")]
-    public float ayeshaVisibleTime = 3f;
-    [Tooltip("Seconds she stays faded before glowing again. Set to 0 to keep her lit the whole time (good for Room 1).")]
-    public float ayeshaHiddenTime = 3f;
+    [Header("Ayesha's blinks in this room")]
+    [Tooltip("How long her first glow lasts when Saad walks in, so the player gets one good look.")]
+    public float firstGlowTime = 1.2f;
+    [Tooltip("How long each blink after that lasts.")]
+    public float blinkTime = 0.3f;
+    [Tooltip("Seconds of total darkness between blinks. Set to 0 to keep her lit the whole time.")]
+    public float darkTime = 4f;
 
     // Draws helper shapes in the Scene view so you can see the room's points.
     void OnDrawGizmos()
     {
-        Gizmos.color = new Color(0.3f, 0.6f, 1f, 0.6f);
+        Gizmos.color = ayeshaSpot != null ? new Color(0.3f, 0.6f, 1f, 0.6f) : new Color(1f, 0.3f, 0.3f, 0.6f);
         Gizmos.DrawWireCube(transform.position, new Vector3(16f, 9f, 0f));
         if (startPoint != null)
         {
