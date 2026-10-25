@@ -1,21 +1,19 @@
 using UnityEngine;
 
-// Ayesha's ghost. She waits next to the right door in each room.
-// She doesn't glow the whole time: her light comes on for a few seconds, then fades,
-// then comes back. While she's faded the room is dark, so the player has to remember
-// which door she was at and how to get there. Each room sets its own timing (see MazeRoom).
+// Ayesha's ghost. In each room she appears next to the door that leads the right way.
+// The room is completely dark. She glows once when Saad walks in, then only BLINKS for
+// a split second every few seconds. The player has to remember what they saw.
+// Each room sets its own timing (see MazeRoom). In "lost" rooms she doesn't appear at all.
 //
-// Give her a child object with a Light 2D on it, and drag that child into "Light Object".
+// Give her a child object with a Light 2D on it (big radius, so a blink lights the whole
+// room), and drag that child into "Light Object".
 public class AyeshaGuide : MonoBehaviour
 {
     [Tooltip("The child object that holds her Light 2D.")]
     public GameObject lightObject;
 
-    [Tooltip("How see-through she is while faded (0 = invisible, 1 = fully visible).")]
-    [Range(0f, 1f)] public float fadedAlpha = 0.08f;
-
-    [Tooltip("How quickly she fades in and out.")]
-    public float fadeSpeed = 4f;
+    [Tooltip("How see-through she is between blinks (0 = invisible).")]
+    [Range(0f, 1f)] public float fadedAlpha = 0f;
 
     [Header("Gentle floating")]
     public float floatHeight = 0.15f;
@@ -23,39 +21,47 @@ public class AyeshaGuide : MonoBehaviour
 
     public bool IsGrabbed { get; private set; }
     public bool IsGlowing { get; private set; }
+    public bool IsPresent { get; private set; } = true;
 
     Vector3 basePosition;
-    Vector3 normalScale;
     SpriteRenderer sprite;
     Color baseColor;
-    float alpha = 1f;
-    float appearTimer = 1f;
 
-    float visibleTime = 3f;
-    float hiddenTime = 0f;
-    float cycleTimer;
+    float firstGlow = 1.2f;
+    float blink = 0.3f;
+    float dark = 4f;
+    float timer;
+    bool firstGlowDone;
 
     void Awake()
     {
         basePosition = transform.position;
-        normalScale = transform.localScale;
         sprite = GetComponent<SpriteRenderer>();
         if (sprite != null) baseColor = sprite.color;
     }
 
-    // Called by the MazeManager when Saad enters a new room.
-    public void MoveTo(Vector3 position, float visibleSeconds, float hiddenSeconds)
+    // Called by the MazeManager when Saad enters a room where she appears.
+    public void AppearAt(Vector3 position, float firstGlowSeconds, float blinkSeconds, float darkSeconds)
     {
+        IsPresent = true;
         IsGrabbed = false;
         basePosition = position;
         transform.position = position;
-        visibleTime = Mathf.Max(0.5f, visibleSeconds);
-        hiddenTime = Mathf.Max(0f, hiddenSeconds);
-        cycleTimer = 0f;   // she always starts glowing when a room begins
-        appearTimer = 0f;  // and grows in from small to normal size
+        firstGlow = Mathf.Max(0.1f, firstGlowSeconds);
+        blink = Mathf.Max(0.05f, blinkSeconds);
+        dark = Mathf.Max(0f, darkSeconds);
+        timer = 0f;
+        firstGlowDone = false;
     }
 
-    // Called by a dark hand when it catches her: her light goes out until she's freed.
+    // Called by the MazeManager when Saad enters a lost room.
+    public void Disappear()
+    {
+        IsPresent = false;
+        IsGrabbed = false;
+    }
+
+    // Called by a dark hand when it catches her: no more blinks until she's freed.
     public void Grab()
     {
         IsGrabbed = true;
@@ -69,42 +75,37 @@ public class AyeshaGuide : MonoBehaviour
 
     void Update()
     {
-        // Floating up and down.
         float bob = Mathf.Sin(Time.time * floatSpeed) * floatHeight;
         transform.position = basePosition + new Vector3(0f, bob, 0f);
 
-        // Growing in when she appears in a new room.
-        if (appearTimer < 1f)
+        bool glowing = false;
+        if (IsPresent && !IsGrabbed)
         {
-            appearTimer += Time.deltaTime * 3f;
-            transform.localScale = normalScale * Mathf.Clamp01(appearTimer);
+            timer += Time.deltaTime;
+            if (!firstGlowDone)
+            {
+                glowing = timer < firstGlow;
+                if (timer >= firstGlow + dark) { firstGlowDone = true; timer = 0f; }
+            }
+            else if (dark <= 0f)
+            {
+                glowing = true;
+            }
+            else
+            {
+                float cycle = blink + dark;
+                if (timer >= cycle) timer -= cycle;
+                glowing = timer < blink;
+            }
         }
-
-        // Glow on, fade out, glow on again...
-        bool glowing;
-        if (hiddenTime <= 0f)
-        {
-            glowing = true;
-        }
-        else
-        {
-            cycleTimer += Time.deltaTime;
-            float cycleLength = visibleTime + hiddenTime;
-            if (cycleTimer >= cycleLength) cycleTimer -= cycleLength;
-            glowing = cycleTimer < visibleTime;
-        }
-        if (IsGrabbed) glowing = false;
         IsGlowing = glowing;
 
         if (lightObject != null && lightObject.activeSelf != glowing) lightObject.SetActive(glowing);
 
-        // Smoothly fade her sprite in and out.
-        float targetAlpha = glowing ? 1f : fadedAlpha;
-        alpha = Mathf.MoveTowards(alpha, targetAlpha, fadeSpeed * Time.deltaTime);
         if (sprite != null)
         {
             Color c = baseColor;
-            c.a = baseColor.a * alpha;
+            c.a = baseColor.a * (glowing ? 1f : (IsPresent ? fadedAlpha : 0f));
             sprite.color = c;
         }
     }
