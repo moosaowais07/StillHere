@@ -1,31 +1,41 @@
+
 using UnityEngine;
 
 public class FogEnemy : MonoBehaviour
 {
-    public float speed = 1.5f;
-    public float detectRange = 8f;
-    Transform target;
+    public int health = 2;
 
-    void Start()
+    public float damageCooldown = 1f;
+
+    private float nextDamageTime = 0f;
+
+    public void TakeDamage()
     {
-        GameObject player = GameObject.FindWithTag("Player");
+        health = health - 1;
+
+        Debug.Log("Fog enemy hit! Health left: " + health);
+
+        if (health <= 0)
+        {
+            Debug.Log("Fog enemy defeated!");
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (Time.time < nextDamageTime)
+        {
+            return;
+        }
+
+        PlayerHealth player = other.GetComponent<PlayerHealth>();
+
         if (player != null)
         {
-            target = player.transform;
+            player.TakeDamage();
+            nextDamageTime = Time.time + damageCooldown;
         }
     }
 
-    void Update()
-    {
-        if (target == null)
-            return;
-
-        float distance = Vector2.Distance(transform.position, target.position);
-        if (distance < detectRange)
-        {
-            float newX = Mathf.MoveTowards(transform.position.x, target.position.x, speed * Time.deltaTime);
-            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
-        }
-    }
- 
 }
