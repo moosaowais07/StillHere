@@ -7,12 +7,11 @@ public class MemoryPickup : MonoBehaviour
     {
         if (!other.CompareTag("Player"))
             return;
-
         WeightSystem weightSystem = other.GetComponent<WeightSystem>();
 
-        if (weightSystem != null)
+        if (weightSystem != null){
             weightSystem.CollectMemory();
-
+        }
         Destroy(gameObject);
     }
 }

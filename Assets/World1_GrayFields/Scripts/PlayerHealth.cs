@@ -12,11 +12,9 @@ public class PlayerHealth : MonoBehaviour
             return;
 
         health = Mathf.Max(health - 1, 0);
+        Debug.Log("Players health: " + health);
 
-        Debug.Log("Saad's Health: " + health);
-
-        if (health <= 0)
-        {
+        if (health <= 0){
             Respawn();
         }
     }
@@ -25,8 +23,7 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = true;
 
-        CheckpointManager manager =
-            FindFirstObjectByType<CheckpointManager>();
+        CheckpointManager manager =FindFirstObjectByType<CheckpointManager>();
 
         if (manager != null)
         {
@@ -34,11 +31,11 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("CheckpointManager not found!");
+            Debug.LogWarning("CheckpointManager not found");
         }
 
         health = 5;
-        Debug.Log("Saad respawned with 5 health!");
+        Debug.Log("Player respawned with 5 health");
 
         isDead = false;
     }
@@ -49,27 +46,24 @@ public class PlayerHealth : MonoBehaviour
             return;
 
         health = Mathf.Max(health - 1, 0);
-
-        Debug.Log("Saad fell! Health: " + health);
-
+        Debug.Log("Player fell Health: " + health);
         isDead = true;
-
-        CheckpointManager manager =
-            FindFirstObjectByType<CheckpointManager>();
+        CheckpointManager manager =FindFirstObjectByType<CheckpointManager>();
 
         if (manager != null)
         {
             manager.RespawnPlayer(gameObject);
         }
+
         else
         {
-            Debug.LogWarning("CheckpointManager not found!");
+            Debug.LogWarning("CheckpointManager not found");
         }
 
         if (health <= 0)
         {
             health = 5;
-            Debug.Log("Saad respawned with 5 health!");
+            Debug.Log("Player respawned with 5 health");
         }
 
         isDead = false;
