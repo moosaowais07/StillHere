@@ -20,7 +20,7 @@ public class CarEnemy : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        RoadHomePlayerHealth health = other.GetComponent<RoadHomePlayerHealth>();
+        PlayerHealth health = other.GetComponent<PlayerHealth>();
         if (health != null) health.TakeHit();
     }
 }
