@@ -1,8 +1,7 @@
 using UnityEngine;
 
-// Runs World 3. Put ONE of these in the scene, on an empty object called "MazeManager".
-// It keeps track of which room Saad is in, moves the camera, tells Ayesha where to
-// appear, and decides what happens when Saad uses a door.
+//it keeps track of which room Saad is in, moves the camera, tells Ayesha where to
+//appear, and decides what happens when Saad uses a door.
 public class MazeManager : MonoBehaviour
 {
     public static MazeManager Instance { get; private set; }
@@ -83,7 +82,7 @@ public class MazeManager : MonoBehaviour
         }
     }
 
-    // Used by wrong doors with no Leads To, and by pits and spikes.
+    //used by wrong doors with no Leads To, and by pits and spikes.
     public void SendBackToRoomStart(string text)
     {
         if (CurrentRoom == null) return;
@@ -135,7 +134,7 @@ public class MazeManager : MonoBehaviour
         messageTimer = seconds;
     }
 
-    // Simple on screen text for the prototype (no UI setup needed).
+    // Simple on screen text for the prototype
     void OnGUI()
     {
         GUIStyle small = new GUIStyle(GUI.skin.label);

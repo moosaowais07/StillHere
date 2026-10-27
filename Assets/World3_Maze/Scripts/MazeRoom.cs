@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// Put this on an empty object placed in the CENTRE of each room.
 // The camera moves to this object's position when Saad enters the room.
 public class MazeRoom : MonoBehaviour
 {
@@ -19,7 +18,7 @@ public class MazeRoom : MonoBehaviour
     [Tooltip("Seconds of total darkness between blinks. Set to 0 to keep her lit the whole time.")]
     public float darkTime = 4f;
 
-    // Draws helper shapes in the Scene view so you can see the room's points.
+    //Draws helper shapes in the Scene view so you can see the room's points.
     void OnDrawGizmos()
     {
         Gizmos.color = ayeshaSpot != null ? new Color(0.3f, 0.6f, 1f, 0.6f) : new Color(1f, 0.3f, 0.3f, 0.6f);

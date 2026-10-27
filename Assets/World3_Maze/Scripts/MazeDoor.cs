@@ -1,11 +1,9 @@
 using UnityEngine;
 
-// Put this on every door. The door needs a BoxCollider2D with "Is Trigger" ticked.
-// Saad stands in front of the door and presses W (or Up arrow) to go through.
+
+// Saad stands in front of the door and presses W to go through.
 //
-// The easiest way to use it: drag the room this door goes to into "Leads To".
-// That way you can build a real maze where wrong doors take you to other rooms,
-// dead ends and loops, instead of just sending you back.
+
 [RequireComponent(typeof(Collider2D))]
 public class MazeDoor : MonoBehaviour
 {
@@ -55,7 +53,7 @@ public class MazeDoor : MonoBehaviour
         return other.attachedRigidbody != null && other.attachedRigidbody.CompareTag("Player");
     }
 
-    // Shows a small hint while Saad is standing at a door.
+    //shows a small hint while Saad is standing at a door.
     void OnGUI()
     {
         if (!playerInside) return;
@@ -66,7 +64,7 @@ public class MazeDoor : MonoBehaviour
         GUI.Label(new Rect(0, Screen.height - 70, Screen.width, 40), "Press W to go through the door", style);
     }
 
-    // In the Scene view, draws a line from this door to the room it leads to.
+    //in the Scene view, draws a line from this door to the room it leads to.
     void OnDrawGizmos()
     {
         if (leadsTo == null) return;

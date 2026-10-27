@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 #endif
 
-// Reads the keyboard for the World 3 test scripts.
-// Works whether your project uses the old Input Manager or the new Input System.
 //   Move:  A / D  or  Left / Right arrows
 //   Jump:  Space
 //   Use a door:  W  or  Up arrow

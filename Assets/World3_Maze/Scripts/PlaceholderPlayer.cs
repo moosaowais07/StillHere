@@ -1,11 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-// A simple stand in for Saad, so World 3 can be tested before Hamza's
-// player prefab is ready. Swap it for his prefab later.
+// A simple stand in for Saad, so World 3 can be tested before
+// player prefab is ready. we can swap it for his prefab later.
 //
-// Needs on the same object: Rigidbody2D, BoxCollider2D, SpriteRenderer,
-// and the tag "Player".
+
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 public class PlaceholderPlayer : MonoBehaviour

@@ -1,12 +1,11 @@
 using UnityEngine;
 
 // Ayesha's ghost. In each room she appears next to the door that leads the right way.
-// The room is completely dark. She glows once when Saad walks in, then only BLINKS for
+// The room is completely dark. She glows once when Saad walks in, then only blinks for
 // a split second every few seconds. The player has to remember what they saw.
-// Each room sets its own timing (see MazeRoom). In "lost" rooms she doesn't appear at all.
+// Each room sets its own timing. In "lost" rooms she doesn't appear at all.
 //
-// Give her a child object with a Light 2D on it (big radius, so a blink lights the whole
-// room), and drag that child into "Light Object".
+
 public class AyeshaGuide : MonoBehaviour
 {
     [Tooltip("The child object that holds her Light 2D.")]

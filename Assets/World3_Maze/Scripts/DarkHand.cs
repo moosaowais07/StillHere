@@ -2,7 +2,7 @@ using UnityEngine;
 
 // A dark hand that comes out of the wall and tries to grab Ayesha.
 // If it reaches her, her light goes out. Saad hits it (J) to make it let go and pull back.
-// It only reaches for her when she is in the same room (within "Reach Range").
+// It only reaches for her when she is within range.
 public class DarkHand : MonoBehaviour, IHittable
 {
     public AyeshaGuide ayesha;

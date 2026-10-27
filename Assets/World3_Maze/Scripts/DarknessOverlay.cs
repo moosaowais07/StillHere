@@ -1,11 +1,10 @@
 using UnityEngine;
 
-// Makes World 3 PITCH BLACK, whatever the lighting settings are.
+// Makes World 3 pitch black, whatever the lighting settings are.
 // It puts a huge black sheet over the level, with a small soft hole around Saad so
 // he can just about see himself. When Ayesha blinks, the black sheet disappears for a
 // moment and the whole room is visible. Then it goes black again.
-//
-// Put this on the MazeManager object (or any empty object). It finds Saad and Ayesha by itself.
+
 public class DarknessOverlay : MonoBehaviour
 {
     [Tooltip("Saad. Leave empty to find the object tagged Player.")]
@@ -29,7 +28,7 @@ public class DarknessOverlay : MonoBehaviour
     public string sortingLayerName = "Default";
     public int sortingOrder = 1000;
 
-    const float sheetSize = 60f;   // the black sheet is 60 x 60 units, much bigger than the screen
+    const float sheetSize = 60f;   //the black sheet is 60 x 60 units, much bigger than the screen
     const int textureSize = 1024;
 
     SpriteRenderer sheet;
