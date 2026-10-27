@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class HealthUI : MonoBehaviour
 {
-    public PlayerHealth health;
+    public RoadHomePlayerHealth health;
     public Image[] orbs;
     public Color litColor = new Color(1f, 0.85f, 0.3f);
     public Color dimColor = new Color(0.2f, 0.2f, 0.25f);

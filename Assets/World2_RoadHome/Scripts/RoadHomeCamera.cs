@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class RoadHomeCamera : MonoBehaviour
 {
     public Transform target;
     public PanicMeter panic;

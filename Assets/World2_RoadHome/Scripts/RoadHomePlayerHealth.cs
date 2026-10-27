@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerHealth : MonoBehaviour
+public class RoadHomePlayerHealth : MonoBehaviour
 {
     public int maxOrbs = 3;
     public int currentOrbs;
