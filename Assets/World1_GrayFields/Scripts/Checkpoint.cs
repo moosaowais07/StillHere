@@ -10,11 +10,12 @@ public class Checkpoint : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        CheckpointManager manager=FindFirstObjectByType<CheckpointManager>();
+        CheckpointManager manager =
+            FindFirstObjectByType<CheckpointManager>();
 
-        if (manager!=null)
+        if (manager != null)
         {
-            manager.SetCheckpoint(transform.position); 
+            manager.SetCheckpoint(transform.position);
             activated = true;
             Debug.Log("Checkpoint activated!");
         }

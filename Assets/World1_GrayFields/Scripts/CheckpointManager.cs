@@ -7,7 +7,8 @@ public class CheckpointManager : MonoBehaviour
 
     private void Awake()
     {
-        currentCheckpoint=GameObject.FindGameObjectWithTag("Player").transform.position;
+        currentCheckpoint = GameObject.FindGameObjectWithTag("Player")
+            .transform.position;
     }
 
     public void SetCheckpoint(Vector3 position)
@@ -18,13 +19,14 @@ public class CheckpointManager : MonoBehaviour
     public void RespawnPlayer(GameObject player)
     {
         player.transform.position = currentCheckpoint;
-        Rigidbody2D rb =player.GetComponent<Rigidbody2D>();
 
-        if (rb!=null)
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+
+        if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
         }
 
-        Debug.Log("Player respawned at checkpoint!");
+        Debug.Log("Saad respawned at checkpoint!");
     }
 }
