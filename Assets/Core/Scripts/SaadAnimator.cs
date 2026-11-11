@@ -1,11 +1,9 @@
 using UnityEngine;
 
 // Plays Saad's animations (Idle, Run, Jump, Fall) and turns him to face the way he's moving.
-// It only WATCHES the player's Rigidbody, so it works with any movement script
+// It only watches the player's Rigidbody, so it works with any movement script
 // (the PlaceholderPlayer now, or Hamza's player later) without changing that script.
-//
-// Put it on the Player, next to the Animator and Sprite Renderer.
-// The Animator Controller needs these parameters (spelled exactly like this):
+
 //   Speed          (Float)  how fast he's moving left/right
 //   VerticalSpeed  (Float)  going up (+) or falling (-)
 //   IsGrounded     (Bool)   standing on something
@@ -46,7 +44,7 @@ public class SaadAnimator : MonoBehaviour
         animator.SetFloat("VerticalSpeed", v.y);
         animator.SetBool("IsGrounded", IsGrounded());
 
-        // Face the direction he's moving (keep the last direction when standing still).
+        // Face the direction he's moving 
         if (sprite != null)
         {
             if (v.x > 0.05f) sprite.flipX = artFacesLeft;
@@ -54,7 +52,7 @@ public class SaadAnimator : MonoBehaviour
         }
     }
 
-    // Same idea as the jump check: is there anything solid just under his feet?
+    //tests if there is anything solid under feet
     bool IsGrounded()
     {
         if (col == null) return true;

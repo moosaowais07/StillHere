@@ -526,13 +526,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: home_tileset_18
+      name: Door
       rect:
         serializedVersion: 2
         x: 16
-        y: 16
+        y: 0
         width: 16
-        height: 16
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -959,6 +959,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
+      Door: -702474596
       home_tileset_0: -2385775000964321786
       home_tileset_1: 3007227074936171519
       home_tileset_10: -9024791126781361898
@@ -969,7 +970,6 @@ TextureImporter:
       home_tileset_15: 1166402195
       home_tileset_16: 95850063
       home_tileset_17: -2106247541
-      home_tileset_18: -702474596
       home_tileset_19: 1770084836
       home_tileset_2: 4474609382690156350
       home_tileset_20: 1973143016
