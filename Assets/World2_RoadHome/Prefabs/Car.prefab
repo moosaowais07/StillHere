@@ -152,4 +152,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarEnemy
   speed: 12
-  lifetime: 15
+  lifetime: 2

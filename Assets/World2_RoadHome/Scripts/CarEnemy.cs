@@ -3,7 +3,7 @@ using UnityEngine;
 public class CarEnemy : MonoBehaviour
 {
     public float speed = 6f;
-    public float lifetime = 15f;
+    public float lifetime = 2f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -20,7 +20,7 @@ public class CarEnemy : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        RoadPlayerHealth health = other.GetComponent<RoadPlayerHealth>();
+        PlayerHealth health = other.GetComponent<PlayerHealth>();
         if (health != null) health.TakeHit();
     }
 }

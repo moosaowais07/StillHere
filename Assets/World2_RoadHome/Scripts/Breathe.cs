@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class Breathe : MonoBehaviour
 {
     public bool unlocked = true;
+    public static bool everUnlocked;
     public float slowScale = 0.5f;
     public float calmPerSecond = 0.25f;
 
@@ -15,6 +16,8 @@ public class Breathe : MonoBehaviour
     {
         panicMeter = GetComponent<PanicMeter>();
         normalFixedDelta = Time.fixedDeltaTime;
+
+        if (everUnlocked) unlocked = true;
     }
 
     // Update is called once per frame
